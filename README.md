@@ -6,13 +6,13 @@ Production website for AM Executive Travel & Transfers Ltd.
 
 The finished static website is included in `/docs`, so no GitHub Actions workflow is required.
 
-1. Create a public GitHub repository named `am-executive-travel`.
+1. Use the public GitHub repository named `AMexecutivetravel`.
 2. Upload every file and folder from this package to the `main` branch.
 3. Open **Settings → Pages**.
 4. Under **Build and deployment**, select **Deploy from a branch**.
 5. Select branch **main**, folder **/docs**, then click **Save**.
 
-GitHub will publish the site at `https://YOUR-USERNAME.github.io/am-executive-travel/`.
+GitHub will publish the site at `https://garryrobson85.github.io/AMexecutivetravel/`.
 
 ## Custom domain
 

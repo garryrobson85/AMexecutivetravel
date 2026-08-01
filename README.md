@@ -39,5 +39,6 @@ Paste the public Google Calendar appointment-schedule URL into `googleBookingUrl
 - `app/site-config.ts` — Google Calendar booking URL
 - `public/brand/` — approved logo artwork
 - `public/images/` — current photography
+- `SEO-LAUNCH-CHECKLIST.md` — actions for Google Search Console and local ranking work
 
 The WhatsApp form opens a prepared message to `07448 369112`; visitor details are not stored by the website.

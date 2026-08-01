@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { siteConfig } from "./site-config";
 import logo from "../public/brand/logo-horizontal.png";
 import monogram from "../public/brand/monogram.png";
@@ -11,24 +12,28 @@ import serviceImage from "../public/images/chauffeur-service.jpg";
 const services = [
   {
     number: "01",
+    slug: "team-travel",
     title: "Team travel",
     copy: "Discreet, coordinated transport for football clubs, management teams and travelling parties — with timing, privacy and presentation handled precisely.",
     detail: "Fixtures · Training · Hotels · Multi-vehicle planning",
   },
   {
     number: "02",
+    slug: "corporate-travel",
     title: "Corporate travel",
     copy: "Polished chauffeur travel for executives, consultants, clients and corporate guests, from a single meeting to a full multi-stop itinerary.",
     detail: "Meetings · Events · Roadshows · Client travel",
   },
   {
     number: "03",
+    slug: "airport-transfers",
     title: "Airport transfers",
     copy: "Calm, door-to-door transfers to every UK airport, planned around your flight and delivered with the same care at any hour.",
     detail: "All UK airports · Early & late · Long-distance",
   },
   {
     number: "04",
+    slug: "weddings-special-occasions",
     title: "Occasions",
     copy: "Refined travel for weddings, bridal parties, guest transfers, hotel movements and the moments where every detail deserves attention.",
     detail: "Weddings · Guest transfers · Special events",
@@ -55,6 +60,8 @@ function WhatsAppIcon() {
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessage, setChatMessage] = useState("");
 
   useEffect(() => {
     const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
@@ -66,9 +73,19 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  function sendWhatsApp(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    function closeChat(event: KeyboardEvent) {
+      if (event.key === "Escape") setChatOpen(false);
+    }
+    document.addEventListener("keydown", closeChat);
+    return () => document.removeEventListener("keydown", closeChat);
+  }, []);
+
+  function sendEnquiry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const deliveryMethod = submitter?.value ?? "whatsapp";
     const lines = [
       "Hello AM Executive Travel, I’d like to request a quote.",
       "",
@@ -81,7 +98,26 @@ export default function Home() {
       `Passengers: ${data.get("passengers") || "Not specified"}`,
       `Further details: ${data.get("details") || "None"}`,
     ];
-    window.open(`https://wa.me/447448369112?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    const message = lines.join("\n");
+
+    if (deliveryMethod === "email") {
+      const subject = `Journey quote request — ${data.get("name")}`;
+      window.location.href = `mailto:bookings@amexecutivetravel.vip?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      return;
+    }
+
+    window.open(`https://wa.me/447448369112?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  }
+
+  function sendChat(method: "whatsapp" | "email") {
+    const message = chatMessage.trim();
+    if (!message) return;
+    const preparedMessage = `Hello AM Executive Travel, I have a website enquiry.\n\n${message}`;
+    if (method === "email") {
+      window.location.href = `mailto:bookings@amexecutivetravel.vip?subject=${encodeURIComponent("Website travel enquiry")}&body=${encodeURIComponent(preparedMessage)}`;
+      return;
+    }
+    window.open(`https://wa.me/447448369112?text=${encodeURIComponent(preparedMessage)}`, "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -106,7 +142,7 @@ export default function Home() {
         <div className="hero-image" aria-hidden="true"><Image src={heroImage} alt="" fill priority sizes="100vw" /></div>
         <div className="hero-shade" />
         <div className="hero-content">
-          <p className="eyebrow hero-eyebrow">Sheffield <span /> Nationwide</p>
+          <p className="eyebrow hero-eyebrow">Executive chauffeur travel <span /> Sheffield &amp; nationwide</p>
           <h1>Travel,<br /><em>elevated.</em></h1>
           <p className="hero-copy">Calm, discreet and dependable chauffeur-driven travel for teams, executives and private clients who expect every detail to be handled.</p>
           <div className="hero-actions">
@@ -146,7 +182,7 @@ export default function Home() {
                 <h3>{service.title}</h3>
                 <p>{service.copy}</p>
                 <small>{service.detail}</small>
-                <a href="#quote" aria-label={`Request a quote for ${service.title}`}>Enquire <ArrowIcon /></a>
+                <Link href={`/services/${service.slug}/`} aria-label={`Learn more about ${service.title}`}>View service <ArrowIcon /></Link>
               </article>
             ))}
           </div>
@@ -169,6 +205,34 @@ export default function Home() {
         <div className="audience-line" data-reveal><span>01</span><h3>Football clubs &amp; teams</h3><p>Coordinated movement, complete discretion.</p></div>
         <div className="audience-line" data-reveal><span>02</span><h3>Executives &amp; organisations</h3><p>Time-conscious travel without compromise.</p></div>
         <div className="audience-line" data-reveal><span>03</span><h3>Private clients</h3><p>Important journeys, thoughtfully handled.</p></div>
+      </section>
+
+      <section className="local-coverage">
+        <div className="section-shell local-grid">
+          <div data-reveal>
+            <p className="eyebrow">Local knowledge, national reach</p>
+            <h2>Executive travel across<br /><em>Sheffield and beyond.</em></h2>
+          </div>
+          <div className="local-copy" data-reveal>
+            <p>Based in Sheffield, AM Executive Travel provides professional chauffeur services across the city, South Yorkshire and nationwide.</p>
+            <p>We arrange collections throughout Sheffield—including the city centre, Dore, Ecclesall, Fulwood, Ranmoor and surrounding areas—with onward travel to business destinations, hotels, venues and every major UK airport.</p>
+            <div className="route-list" aria-label="Popular airport routes">
+              <span>Manchester Airport</span><span>East Midlands Airport</span><span>Leeds Bradford Airport</span><span>Birmingham &amp; London</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="testimonials section-shell" id="testimonials">
+        <div className="testimonial-heading" data-reveal>
+          <p className="eyebrow">Client feedback</p>
+          <h2>A reputation built<br /><em>journey by journey.</em></h2>
+        </div>
+        <figure className="testimonial-placeholder" data-reveal>
+          <span className="quote-mark" aria-hidden="true">“</span>
+          <blockquote>Genuine client reviews will appear here once services are live.</blockquote>
+          <figcaption><strong>Launching 15 August 2026</strong><span>Bookings now open</span></figcaption>
+        </figure>
       </section>
 
       <section className="process">
@@ -204,7 +268,7 @@ export default function Home() {
             <a href="mailto:bookings@amexecutivetravel.vip"><small>Email</small><strong>bookings@amexecutivetravel.vip</strong></a>
           </div>
         </div>
-        <form className="quote-form" onSubmit={sendWhatsApp} data-reveal>
+        <form className="quote-form" onSubmit={sendEnquiry} data-reveal>
           <div className="field"><label htmlFor="name">Your name *</label><input id="name" name="name" autoComplete="name" required /></div>
           <div className="field"><label htmlFor="organisation">Organisation or team</label><input id="organisation" name="organisation" autoComplete="organization" /></div>
           <div className="field field-wide"><label htmlFor="service">Service *</label><select id="service" name="service" defaultValue="" required><option value="" disabled>Select a service</option>{services.map((s) => <option key={s.title}>{s.title}</option>)}</select></div>
@@ -213,8 +277,11 @@ export default function Home() {
           <div className="field"><label htmlFor="pickup">Pickup *</label><input id="pickup" name="pickup" autoComplete="street-address" required /></div>
           <div className="field"><label htmlFor="destination">Destination *</label><input id="destination" name="destination" required /></div>
           <div className="field field-wide"><label htmlFor="details">Further details</label><textarea id="details" name="details" rows={3} placeholder="Timings, return journey, luggage or anything else we should know" /></div>
-          <button className="button button-gold field-wide" type="submit"><WhatsAppIcon /> Continue in WhatsApp <ArrowIcon /></button>
-          <p className="form-note field-wide">Your details are not stored by this website.</p>
+          <div className="form-actions field-wide">
+            <button className="button button-gold button-whatsapp" type="submit" name="delivery" value="whatsapp"><WhatsAppIcon /> Continue in WhatsApp <ArrowIcon /></button>
+            <button className="button button-outline" type="submit" name="delivery" value="email">Send by email <ArrowIcon /></button>
+          </div>
+          <p className="form-note field-wide">Choose how you would like to send your enquiry. Your details are not stored by this website.</p>
         </form>
       </section>
 
@@ -231,6 +298,27 @@ export default function Home() {
         </div>
         <div className="footer-bottom"><span>© 2026 AM Executive Travel &amp; Transfers Ltd</span><span>Fully Licensed &amp; Insured</span></div>
       </footer>
+
+      <aside className={`chat-widget ${chatOpen ? "chat-is-open" : ""}`} aria-label="Chat with AM Executive Travel">
+        <section className="chat-panel" role="dialog" aria-modal="false" aria-labelledby="chat-title" aria-hidden={!chatOpen}>
+          <header>
+            <div><strong id="chat-title">AM Executive Travel</strong><span><i /> We’ll reply as soon as we can</span></div>
+            <button type="button" onClick={() => setChatOpen(false)} aria-label="Close chat">×</button>
+          </header>
+          <div className="chat-welcome"><p>Welcome</p><strong>How can we help with your journey?</strong><span>Write a message below, then choose WhatsApp or email.</span></div>
+          <div className="chat-compose">
+            <label className="sr-only" htmlFor="chat-message">Your message</label>
+            <textarea id="chat-message" value={chatMessage} onChange={(event) => setChatMessage(event.target.value)} rows={3} placeholder="Write your message…" />
+            <div>
+              <button type="button" disabled={!chatMessage.trim()} onClick={() => sendChat("whatsapp")}>WhatsApp</button>
+              <button type="button" disabled={!chatMessage.trim()} onClick={() => sendChat("email")}>Email</button>
+            </div>
+          </div>
+        </section>
+        <button className="chat-launcher" type="button" onClick={() => setChatOpen(!chatOpen)} aria-expanded={chatOpen}>
+          <span aria-hidden="true">●</span>{chatOpen ? "Close chat" : "Let’s Chat!"}
+        </button>
+      </aside>
 
       <a className="mobile-whatsapp" href="https://wa.me/447448369112" target="_blank" rel="noreferrer" aria-label="Chat with AM Executive Travel on WhatsApp"><WhatsAppIcon /><span>WhatsApp</span></a>
     </main>

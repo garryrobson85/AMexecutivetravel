@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://www.amexectravel.co.uk
+Sitemap: https://www.amexectravel.co.uk/sitemap.xml

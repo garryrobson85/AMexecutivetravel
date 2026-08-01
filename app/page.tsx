@@ -11,28 +11,24 @@ import serviceImage from "../public/images/chauffeur-service.jpg";
 
 const services = [
   {
-    number: "01",
     slug: "team-travel",
     title: "Team travel",
     copy: "Discreet, coordinated transport for football clubs, management teams and travelling parties — with timing, privacy and presentation handled precisely.",
     detail: "Fixtures · Training · Hotels · Multi-vehicle planning",
   },
   {
-    number: "02",
     slug: "corporate-travel",
     title: "Corporate travel",
     copy: "Polished chauffeur travel for executives, consultants, clients and corporate guests, from a single meeting to a full multi-stop itinerary.",
     detail: "Meetings · Events · Roadshows · Client travel",
   },
   {
-    number: "03",
     slug: "airport-transfers",
     title: "Airport transfers",
     copy: "Calm, door-to-door transfers to every UK airport, planned around your flight and delivered with the same care at any hour.",
     detail: "All UK airports · Early & late · Long-distance",
   },
   {
-    number: "04",
     slug: "weddings-special-occasions",
     title: "Occasions",
     copy: "Refined travel for weddings, bridal parties, guest transfers, hotel movements and the moments where every detail deserves attention.",
@@ -177,8 +173,8 @@ export default function Home() {
           </div>
           <div className="service-grid">
             {services.map((service) => (
-              <article className="service-card" key={service.number} data-reveal>
-                <span className="service-number">{service.number}</span>
+              <article className="service-card" key={service.slug} data-reveal>
+                <span className="service-motif" aria-hidden="true" />
                 <h3>{service.title}</h3>
                 <p>{service.copy}</p>
                 <small>{service.detail}</small>
@@ -202,9 +198,9 @@ export default function Home() {
 
       <section className="audience section-shell">
         <p className="eyebrow" data-reveal>Designed for people in motion</p>
-        <div className="audience-line" data-reveal><span>01</span><h3>Football clubs &amp; teams</h3><p>Coordinated movement, complete discretion.</p></div>
-        <div className="audience-line" data-reveal><span>02</span><h3>Executives &amp; organisations</h3><p>Time-conscious travel without compromise.</p></div>
-        <div className="audience-line" data-reveal><span>03</span><h3>Private clients</h3><p>Important journeys, thoughtfully handled.</p></div>
+        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true" /><h3>Football clubs &amp; teams</h3><p>Coordinated movement, complete discretion.</p></div>
+        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true" /><h3>Executives &amp; organisations</h3><p>Time-conscious travel without compromise.</p></div>
+        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true" /><h3>Private clients</h3><p>Important journeys, thoughtfully handled.</p></div>
       </section>
 
       <section className="local-coverage">
@@ -239,7 +235,7 @@ export default function Home() {
         <div className="section-shell">
           <div className="process-heading" data-reveal><p className="eyebrow">Simple by design</p><h2>From enquiry<br /><em>to arrival.</em></h2></div>
           <div className="steps">
-            {steps.map(([title, copy], index) => <article key={title} data-reveal><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}
+            {steps.map(([title, copy]) => <article key={title} data-reveal><span className="step-mark" aria-hidden="true" /><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
         </div>
       </section>

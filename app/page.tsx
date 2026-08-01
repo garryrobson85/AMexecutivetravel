@@ -129,6 +129,7 @@ export default function Home() {
         <nav id="main-nav" className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
           <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
           <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
+          <a href="#testimonials" onClick={() => setMenuOpen(false)}>Testimonials</a>
           <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
           <a className="nav-cta" href="#quote" onClick={() => setMenuOpen(false)}>Request a quote</a>
         </nav>
@@ -174,7 +175,7 @@ export default function Home() {
           <div className="service-grid">
             {services.map((service) => (
               <article className="service-card" key={service.slug} data-reveal>
-                <span className="service-motif" aria-hidden="true" />
+                <span className="service-motif" aria-hidden="true"><Image src={monogram} alt="" /></span>
                 <h3>{service.title}</h3>
                 <p>{service.copy}</p>
                 <small>{service.detail}</small>
@@ -198,9 +199,9 @@ export default function Home() {
 
       <section className="audience section-shell">
         <p className="eyebrow" data-reveal>Designed for people in motion</p>
-        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true" /><h3>Football clubs &amp; teams</h3><p>Coordinated movement, complete discretion.</p></div>
-        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true" /><h3>Executives &amp; organisations</h3><p>Time-conscious travel without compromise.</p></div>
-        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true" /><h3>Private clients</h3><p>Important journeys, thoughtfully handled.</p></div>
+        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true"><Image src={monogram} alt="" /></span><h3>Football clubs &amp; teams</h3><p>Coordinated movement, complete discretion.</p></div>
+        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true"><Image src={monogram} alt="" /></span><h3>Executives &amp; organisations</h3><p>Time-conscious travel without compromise.</p></div>
+        <div className="audience-line" data-reveal><span className="audience-mark" aria-hidden="true"><Image src={monogram} alt="" /></span><h3>Private clients</h3><p>Important journeys, thoughtfully handled.</p></div>
       </section>
 
       <section className="local-coverage">
@@ -235,7 +236,7 @@ export default function Home() {
         <div className="section-shell">
           <div className="process-heading" data-reveal><p className="eyebrow">Simple by design</p><h2>From enquiry<br /><em>to arrival.</em></h2></div>
           <div className="steps">
-            {steps.map(([title, copy]) => <article key={title} data-reveal><span className="step-mark" aria-hidden="true" /><h3>{title}</h3><p>{copy}</p></article>)}
+            {steps.map(([title, copy]) => <article key={title} data-reveal><span className="step-mark" aria-hidden="true"><Image src={monogram} alt="" /></span><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
         </div>
       </section>
